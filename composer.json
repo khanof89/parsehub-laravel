@@ -1,6 +1,7 @@
 {
     "name": "shahrukhkhan/parsehub-laravel",
     "description": "This package helps you communicate with parsehub api",
+    "keywords": ["parsehub", "parsehub wrapper", "laravel parsehub wrapper", "parsehub api wrapper"],
     "type": "library",
     "require": {
         "guzzlehttp/guzzle": "^6.3"
@@ -12,5 +13,10 @@
             "email": "shahrukh@iamshahrukh.com"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "Shahrukh\\Parsehub\\": "src/"
+        }
+    },
     "minimum-stability": "stable"
 }
