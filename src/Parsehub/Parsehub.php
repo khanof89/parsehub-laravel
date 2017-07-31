@@ -6,11 +6,10 @@
  * Time: 4:38 PM
  */
 
-namespace Shahrukh;
+namespace Shahrukh\Parsehub;
 
 
 use GuzzleHttp\Client;
-use Shahrukh\Parsehub\ProjectTokenNotFoundException;
 
 class Parsehub
 {
