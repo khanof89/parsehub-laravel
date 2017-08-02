@@ -17,14 +17,19 @@ class Parsehub
     const GET = 'get';
     const POST = 'post';
 
+    public static $apiKey;
+
+    public static $baseURI = 'https://www.parsehub.com/api/v2/';
+
+    public static $client;
+
     /**
      * Parsehub constructor.
      */
     public function __construct()
     {
-        $this->client = new Client();
-        $this->apiKey = env('PARSEHUB_KEY');
-        $this->baseURI = 'https://www.parsehub.com/api/v2/';
+        self::$client = new Client();
+        self::$apiKey = env('PARSEHUB_KEY');
     }
 
     /**
@@ -34,16 +39,16 @@ class Parsehub
      * @return string
      * @throws ProjectTokenNotFoundException
      */
-    public function getProject($projectToken)
+    public static function getProject($projectToken)
     {
         if(!$projectToken)
         {
             throw new ProjectTokenNotFoundException('Please provide a project token');
         }
 
-        $url = $this->buildProjectUri($projectToken);
+        $url = self::buildProjectUri($projectToken);
 
-        return $this->httpRequest($url, self::GET);
+        return self::httpRequest($url, self::GET);
     }
 
     /**
@@ -63,11 +68,11 @@ class Parsehub
      *                   use of the offset and limit parameters to access the full list of projects.
      * @return string
      */
-    public function getProjects()
+    public static function getProjects()
     {
-        $url = $this->buildProjectUri();
+        $url = self::buildProjectUri();
 
-        return $this->httpRequest($url, self::GET);
+        return self::httpRequest($url, self::GET);
     }
 
     /**
@@ -85,42 +90,42 @@ class Parsehub
      * @param array $params
      * @return string
      */
-    public function runProject($projectToken, $params = [])
+    public static function runProject($projectToken, $params = [])
     {
-        $url = $this->buildProjectUri($projectToken, $params);
-        return $this->httpRequest($url, self::POST, $params);
+        $url = self::buildProjectUri($projectToken, $params);
+        return self::httpRequest($url, self::POST, $params);
     }
 
     /**
      * @param $runToken
      * @return string
      */
-    public function getRun($runToken)
+    public static function getRun($runToken)
     {
-        $url = $this->buildRunUri($runToken);
-        return $this->httpRequest($url, self::GET);
+        $url = self::buildRunUri($runToken);
+        return self::httpRequest($url, self::GET);
     }
 
     /**
      * @param $runToken
      * @return string
      */
-    public function getRunData($runToken)
+    public static function getRunData($runToken)
     {
-        $url = $this->buildRunUri($runToken, $options = [], 'data');
-        return $this->httpRequest($url, self::GET);
+        $url = self::buildRunUri($runToken, $options = [], 'data');
+        return self::httpRequest($url, self::GET);
     }
 
-    public function getLastReadyRunData($projectToken)
+    public static function getLastReadyRunData($projectToken)
     {
-        $url = $this->buildProjectUri($projectToken, $options = [], $extras = ['last_ready_run', 'data']);
-        return $this->httpRequest($url, self::GET);
+        $url = self::buildProjectUri($projectToken, $options = [], $extras = ['last_ready_run', 'data']);
+        return self::httpRequest($url, self::GET);
     }
 
-    public function cancelRun($runToken)
+    public static function cancelRun($runToken)
     {
-        $url = $this->buildRunUri($runToken, $options = [], $extras = ['cancel']);
-        return $this->httpRequest($url, self::POST);
+        $url = self::buildRunUri($runToken, $options = [], $extras = ['cancel']);
+        return self::httpRequest($url, self::POST);
     }
 
     /**
@@ -128,9 +133,9 @@ class Parsehub
      * @param array $options
      * @return string
      */
-    protected function buildProjectUri($projectToken ='', $options = [], $extras = [])
+    protected static function buildProjectUri($projectToken ='', $options = [], $extras = [])
     {
-        $url = $this->baseURI.'projects';
+        $url = self::$baseURI.'projects';
         if($projectToken)
         {
             $url .= DIRECTORY_SEPARATOR. $projectToken;
@@ -143,7 +148,7 @@ class Parsehub
         {
             $url .= http_build_query($options);
         }
-        $url .= "?api_key=$this->apiKey";
+        $url .= '?api_key='. self::$apiKey;
         return $url;
     }
 
@@ -152,9 +157,9 @@ class Parsehub
      * @param array $options
      * @return string
      */
-    protected function buildRunUri($runToken ='', $options = [], $extras = [])
+    protected static function buildRunUri($runToken ='', $options = [], $extras = [])
     {
-        $url = $this->baseURI.'runs';
+        $url = self::$baseURI.'runs';
         if($runToken)
         {
             $url .= DIRECTORY_SEPARATOR. $runToken;
@@ -167,7 +172,7 @@ class Parsehub
         {
             $url .= http_build_query($options);
         }
-        $url .= "?api_key=$this->apiKey";
+        $url .= '?api_key='.self::$apiKey;
         return $url;
     }
 
@@ -176,14 +181,14 @@ class Parsehub
      * @param $method
      * @return string
      */
-    public function httpRequest($url, $method, $params = [])
+    public static function httpRequest($url, $method, $params = [])
     {
         if($method === self::GET) {
-            $request = $this->client->request($method, $url);
+            $request = self::$client->request($method, $url);
         }
         else
         {
-            $request = $this->client->request($method, $url, $params);
+            $request = self::$client->request($method, $url, $params);
         }
 
         $response             = new \stdClass();
