@@ -92,7 +92,7 @@ class Parsehub
      */
     public static function runProject($projectToken, $params = [])
     {
-        $url = self::buildProjectUri($projectToken, $params);
+        $url = self::buildProjectUri($projectToken, 'run');
         return self::httpRequest($url, self::POST, $params);
     }
 
@@ -131,6 +131,7 @@ class Parsehub
     /**
      * @param string $projectToken
      * @param array $options
+     * @param $extras
      * @return string
      */
     protected static function buildProjectUri($projectToken ='', $options = [], $extras = [])
@@ -179,6 +180,7 @@ class Parsehub
     /**
      * @param $url
      * @param $method
+     * @param $params
      * @return string
      */
     public static function httpRequest($url, $method, $params = [])
