@@ -138,7 +138,7 @@ class Parsehub
         $url = self::$baseURI.'projects';
         if($projectToken)
         {
-            $url .= DIRECTORY_SEPARATOR. $projectToken;
+            $url .= DIRECTORY_SEPARATOR. trim($projectToken);
         }
         if($extras)
         {
@@ -162,7 +162,7 @@ class Parsehub
         $url = self::$baseURI.'runs';
         if($runToken)
         {
-            $url .= DIRECTORY_SEPARATOR. $runToken;
+            $url .= DIRECTORY_SEPARATOR. trim($runToken);
         }
         if($extras)
         {
