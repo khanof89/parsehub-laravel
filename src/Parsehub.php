@@ -92,7 +92,7 @@ class Parsehub
      */
     public static function runProject($projectToken, $params = [])
     {
-        $url = self::buildProjectUri($projectToken, 'run');
+        $url = self::buildProjectUri($projectToken, '', ['/run']);
         return self::httpRequest($url, self::POST, $params);
     }
 
