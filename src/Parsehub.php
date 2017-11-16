@@ -190,7 +190,8 @@ class Parsehub
         }
         else
         {
-            $request = self::$client->request($method, $url, ['form_params' => $params]);
+            $url .= http_build_query($params);
+            $request = self::$client->request($method, $url);
         }
 
         $response             = new \stdClass();
