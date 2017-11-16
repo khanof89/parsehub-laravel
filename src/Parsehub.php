@@ -93,7 +93,7 @@
         {
             $url = self::$baseURI . "projects/$projectToken/run?api_key=". self::$apiKey;
 
-            $params  = json_encode(['query' => $params]);
+            $params = json_encode(['start_value_override' => $params]);
             $request = self::$client->request(self::POST, $url, ['form_params' => $params]);
 
             $response             = new \stdClass();
